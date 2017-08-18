@@ -13,7 +13,7 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 ###### Sensores:
 * DHT 22 ou 11: Sensor de umidade e temperatura a versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
 
-# Montagem
+## Montagem
 ###### Painel de LCD: soltar o barramento macho e encaixar na protoboard
 | LCD | LCD  |Arduino/Proto|
 | :---|:---: |---:     |
