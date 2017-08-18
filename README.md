@@ -10,8 +10,11 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 * 1 Resistor 330 Ohms
 * 1 Resistor 10k para o método Pull-UP (caso o sensor esteja longe da placa)
 * 1 Potenciômetro: usá-lo somente se o painel for 16x2 onde não tem auto-contraste
+
 ###### Sensores:
-* DHT 22 ou 11: Sensor de umidade e temperatura a versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
+* 1 Sensor de temperatura e umidade ambiente: DHT22 (não é necessário, no projeto ele esta instalado na placa do projeto, mas o ideal é instalar ele na estufa ou no ambiente externo proximo da horta). A versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
+* 1 Sensor de umidade no solo Higrômetro: DN1619
+* 1 Sensor LDR
 
 ## Montagem
 ###### Painel de LCD: soltar o barramento macho e encaixar na protoboard
