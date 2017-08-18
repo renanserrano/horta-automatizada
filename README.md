@@ -58,7 +58,7 @@ void loop() {
 
 ## Arduino código: DHT
 Para testar o DHT
-`Incluir Biblioteca: DHT Sensor Library by Adafruit`
+`Incluir Biblioteca: DHT Sensor Library by Adafruit` e 
 `Incluir Biblioteca: Adafruit Unified Sensor`
 
 | DHT | DHT  |Ardu/Proto|
@@ -142,4 +142,4 @@ lcd.setCursor(0, 0);
   }
 ```
 ###### Método Pull-up
-Evita interferências quando o sensor está a longas distâncias do arduino: incluir um resistor de 10k do pino Data (2) para o power VCC (5V)
+`Evita interferências quando o sensor está a longas distâncias do arduino: incluir um resistor de 10k do pino Data (2) para o power VCC (5V)`
