@@ -1,18 +1,19 @@
-# horta-automatizada
+# Horta Automatizada
 Conceito para a contrução de uma horta que detecta umidade da terra, do ambiente, temperatura e iluminação. Sua lógica pode ser aplicada em outros projetos.
 
-# Materiais
+## Materiais
 * Painel LCD: [JHD204A](http://www.alldatasheet.com/datasheet-pdf/pdf/276144/JHD/JHD204A.html) - 16x4
 Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 * Arduino Uno
 * 12 Jumpers
 * Protoboard
-* 1 Resistor 330
+* 1 Resistor 330 Ohms
+* 1 Resistor 10k para o método Pull-UP (caso o sensor esteja longe da placa)
 * 1 Potenciômetro: usá-lo somente se o painel for 16x2 onde não tem auto-contraste
 ###### Sensores:
 * DHT 22 ou 11: Sensor de umidade e temperatura a versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
 
-# Passo a Passo
+# Montagem
 ###### Painel de LCD: soltar o barramento macho e encaixar na protoboard
 | LCD | LCD  |Arduino/Proto|
 | :---|:---: |---:     |
@@ -33,6 +34,7 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 <img src="https://www.arduino.cc/en/uploads/Tutorial/LCD_Base_bb_Fritz.png" width="500"/>
 
 ## Arduino código: Hello World!
+Para testar o painel LCD
 `Definir o Arduino Uno e a porta correta`
 `Incluir Biblioteca: DHT Sensor Library by Adafruit`
 
@@ -55,6 +57,7 @@ void loop() {
 ```
 
 ## Arduino código: DHT
+Para testar o DHT
 `Incluir Biblioteca: DHT Sensor Library by Adafruit`
 `Incluir Biblioteca: Adafruit Unified Sensor`
 
@@ -104,6 +107,7 @@ void loop() {
 ```
 
 ## Código com LCD + DHT
+Os dois código
 ```
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
