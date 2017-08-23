@@ -30,9 +30,12 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 | 5 |  R/W |  ground   |
 | 1 |  VSS |  ground   |
 | 2 | VDD/VCC | 5V     |
-| 15 |10k resistor positivo |end 5V + ground|
-| 16 |10k resistor| negativo/ground  |
-| 3 | Potenciômetro 5V e ground(negativo) | - |
+| 15 |anodo com resistor de 330 |VCC + ground|
+| 16 |catodo| ground  |
+| 3 | V0 | Potenciômetro 10k pino 2 (meio) |
+| - | - | Potenciometro 10k pino 1 (positivo) |
+| - | - | Potenciometro 10k pino 3 (ground) |
+
 
 <img src="https://www.arduino.cc/en/uploads/Tutorial/LCD_Base_bb_Fritz.png" width="500"/>
 
