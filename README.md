@@ -1,20 +1,39 @@
 # Horta Automatizada
 Conceito para a contrução de uma horta que detecta umidade da terra, do ambiente, temperatura e iluminação. Sua lógica pode ser aplicada em outros projetos.
 
+A instrução a seguir descorrerá da seguinte maneira:
+1. Materiais
+2. Sensores
+3. Montagem do painel lcd
+4. Código para testar o painel lcd
+5. Código básico do painel
+6. Montagem do DHT e código básico
+7. Código do DHT para exibir no lcd
+8. Montagem sensor LDR (iluminação do ambiente)
+9. Código LDR
+10. Código do LDR, DHT e LCD
+11. Montagem higrômetro
+12. Código higrômetro
+13. Código do higrômetro, LDR, DHT e LCD
+14. Montagem rele (ativador do esguicho de água)
+15. Código rele
+16. Código do rele, higrômetro, LDR, DHT e LCD
+
 ## Materiais
-* Painel LCD: [JHD204A](http://www.alldatasheet.com/datasheet-pdf/pdf/276144/JHD/JHD204A.html) - 16x4
+* Painel LCD: [JHD204A](http://www.alldatasheet.com/datasheet-pdf/pdf/276144/JHD/JHD204A.html) - 20x4
 Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 * Arduino Uno
-* 12 Jumpers
-* Protoboard
-* 1 Resistor 330 Ohms
+* Jumpers macho-macho e femea-macho
+* Protoboard (para prototipagem)
+* 1 Resistor 330 Ohms (para o painel)
 * 1 Resistor 10k para o método Pull-UP (caso o sensor esteja longe da placa)
-* 1 Potenciômetro 10k: usá-lo somente se o painel não tem auto-contraste
+* 1 Potenciômetro 10k (usá-lo somente se o painel não tem auto-contraste)
+* Rele (para liberaçao da agua de irrigação)
 
 ###### Sensores:
 * 1 Sensor de temperatura e umidade ambiente: DHT22 (não é necessário, no projeto ele esta instalado na placa do projeto, mas o ideal é instalar ele na estufa ou no ambiente externo proximo da horta). A versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
+* 1 Sensor LDR já com resistor
 * 1 Sensor de umidade no solo Higrômetro: DN1619
-* 1 Sensor LDR
 
 ## Montagem
 ###### Painel de LCD: soltar o barramento macho e encaixar na protoboard
@@ -39,33 +58,52 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 (VCC: 5V ou 3V)
 <img src="https://www.arduino.cc/en/uploads/Tutorial/LCD_Base_bb_Fritz.png" width="500"/>
 
-## Arduino código: Hello World!
+## Arduino teste: Hello World!
 Para testar o painel LCD
-`Definir o Arduino Uno e a porta correta`
-`Incluir Biblioteca: DHT Sensor Library by Adafruit`
+`Definir o Arduino Uno e a porta correta` +
+Lembre-se sempre de definir o tamanho do painel em `lcd.begin(16, 2);` ou `lcd.begin(20,4);`
 
-```
+```C
 #include <LiquidCrystal.h>
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 void setup() {
-  // put your setup code here, to run once:
-    lcd.begin(16, 2);
+    lcd.begin(20, 4);
     lcd.print("hello, world!");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
     lcd.setCursor(0, 1);
     lcd.print(millis() / 1000);
 }
+```
+## Código LCD
+```C
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+    lcd.begin(20, 4);
+}
+
+void loop() {
+    delay(100);
+}
+
+lcd.setCursor(0, 0);
+  lcd.print("Temperatura ");
+  
+  lcd.setCursor(0, 1);
+  lcd.print("Umidade ");
+  }
 ```
 
 ## Arduino código: DHT
 Para testar o DHT
 `Incluir Biblioteca: DHT Sensor Library by Adafruit` e 
-`Incluir Biblioteca: Adafruit Unified Sensor`
+`Incluir Biblioteca: Adafruit Unified Sensor` (a última da lista)
 
 | DHT | DHT  |Ardu/Proto|
 | :---| :---:|  ---:   |
@@ -76,10 +114,8 @@ Para testar o DHT
 | 4   | GND  |ground/negativo|
 
 
-```
+```C
 #include "DHT.h"
-// #define DHTPIN 7 //Porta data que esta conectado no arduino
-// #define DHTTYPE DHT22
 DHT dht(7, DHT22);
 
 void setup() {
@@ -89,14 +125,14 @@ void setup() {
 void loop() {
   delay(2000);
   float h = dht.readHumidity();
-  float t = dht.readTemperature(); //Se colocar (true) vira farenheit
+  float t = dht.readTemperature();
   
-  if (isnan(h) || isnan(t) || isnan(f)) {
+  if (isnan(h) || isnan(t)) {
   Serial.println("Failed to read from DHT sensor!");
   return;
 }
 
-  // Caso haja mais de um sensor, tirar a média em Celsius
+  // Incluir este caso haja mais de um sensor, tirar a média em Celsius
   //float hic = dht.computeHeatIndex(t, h, false);
   
   lcd.setCursor(0, 0);
@@ -111,27 +147,28 @@ void loop() {
   }
   
 ```
+`lcd.print(t);` quando não coloca entre "aspas", significa que você está referenciado/chamando a variável citada anteriormente.
 
 ## Código com LCD + DHT
 Os dois código
-```
+```C
+#include "DHT.h"
 #include <LiquidCrystal.h>
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 DHT dht(7, DHT22);
 
 void setup() {
-  // put your setup code here, to run once:
-    lcd.begin(16, 2);
+    lcd.begin(20, 4);
     dht.begin();
 }
 
 void loop() {
     delay(100);
   float h = dht.readHumidity();
-  float t = dht.readTemperature(); //Se colocar (true) vira farenheit
+  float t = dht.readTemperature();
   
-  if (isnan(h) || isnan(t) || isnan(f)) {
+  if (isnan(h) || isnan(t)) {
   Serial.println("Failed to read from DHT sensor!");
   return;
 }
@@ -139,7 +176,7 @@ void loop() {
 lcd.setCursor(0, 0);
   lcd.print("Temperatura ");
   lcd.print(t); //referencia ao float
-  lcd.print("˚C");
+  lcd.print("C");
   
   lcd.setCursor(0, 1);
   lcd.print("Umidade ");
@@ -147,5 +184,256 @@ lcd.setCursor(0, 0);
   lcd.print("%");
   }
 ```
-###### Método Pull-up
-`Evita interferências quando o sensor está a longas distâncias do arduino: incluir um resistor de 10k do pino Data (2) para o power VCC (5V)`
+Para farenheit:
+`float t = dht.readTemperature(); //Se colocar (true) vira farenheit` dai tbm precisa alterar o ` if (isnan(h) || isnan(t)) {` para ` if (isnan(h) || isnan(f))`
+
+
+## Sendor LDR
+| LDR | Arduino|
+| :---| ---:|
+| GND | GND|
+| VCC | VCC |
+
+```C
+const int SensorLuz = A0;
+int luz;
+
+void setup() {
+	}
+
+void loop() {
+luz = analogRead(SensorLuz);
+luz = map(luz,0,1023,0,100) // ele de fábrica lê de 0 a 1023 e agora vai ler de 0 a 100
+
+lcd.setCursor(0,2);
+lcd.print("Luminosidade");
+lcd.print(luz);
+lcd.print(~);
+}
+```
+
+## Código LDR + DHT + LCD
+```C
+#include "DHT.h"
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+DHT dht(7, DHT22);
+
+const int SensorLuz = A0;
+int luz;
+
+void setup() {
+  lcd.begin(20, 4);
+  dht.begin();
+}
+
+void loop() {
+  delay(100);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  if (isnan(h) || isnan(t)) {
+    lcd.println("Failed");
+    return;
+  }
+
+    luz = analogRead(SensorLuz);
+    luz = map(luz,0,1023,0,100); // ele de fábrica lê de 0 a 1023 e agora vai ler de 0 a 100
+
+    lcd.setCursor(0, 0);
+    lcd.print("Temperatura ");
+    lcd.print(t);
+    lcd.print("C");
+
+    lcd.setCursor(0, 1);
+    lcd.print("Umidade ");
+    lcd.print(h);
+    lcd.print("%");
+
+    lcd.setCursor(0, 2);
+    lcd.print("Luminosidade ");
+    lcd.print(luz);
+    lcd.print("% ");
+}
+```
+`  float t = dht.readTemperature(); //Se colocar (true) vira farenheit` e `luz = map(luz,0,1023,0,100); // ele de fábrica lê de 0 a 1023 e agora vai ler de 0 a 100`
+
+## Higrômetro - sensor de umidade da terra
+| Higrômetro | Arduino|
+| :---| ---:|
+| GND | GND|
+| VCC | VCC |
+| A0 | A1 |
+
+```C
+const int SensorUmidade = A1;
+int TerraUmidade;
+
+void setup() {
+
+}
+
+void loop() {
+  TerraUmidade = analogRead(SensorUmidade);
+  TerraUmidade = map(umidade,0,1023,100,0);
+
+  lcd.setCursor(0,3);
+  lcd.print("Umidade ");
+  lcd.print(TerraUmidade);
+  lcd.print("%");
+
+}
+```
+`//aqui se inverter a posição (umidade,0,1023,0,100) ele vai ler oposto`
+
+## Código Higrômetro + LDR + DHT + LCD
+```C
+#include "DHT.h"
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+DHT dht(7, DHT22);
+
+const int SensorLuz = A0;
+int luz;
+
+const int SensorUmidade = A1;
+int TerraUmidade;
+
+void setup() {
+  lcd.begin(20, 4);
+  dht.begin();
+}
+
+void loop() {
+  delay(100);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  if (isnan(h) || isnan(t)) {
+    lcd.println("Failed");
+    return;
+  }
+
+    luz = analogRead(SensorLuz);
+    luz = map(luz,0,1023,0,100);
+
+    TerraUmidade = analogRead(SensorUmidade);
+    TerraUmidade = map(umidade,0,1023,100,0);
+
+    lcd.setCursor(0, 0);
+    lcd.print("Temperatura ");
+    lcd.print(t);
+    lcd.print("C");
+
+    lcd.setCursor(0, 1);
+    lcd.print("Umidade ");
+    lcd.print(h);
+    lcd.print("%");
+
+    lcd.setCursor(0, 2);
+    lcd.print("Luminosidade ");
+    lcd.print(luz);
+    lcd.print("% ");
+
+    lcd.setCursor(0,3);
+    lcd.print("Umidade ");
+    lcd.print(TerraUmidade);
+    lcd.print("%");
+}
+```
+
+## Válvula
+Por enqto foi utilizado um led para simular a atuação do rele
+| LED | Arduino|
+| :---| ---:|
+| VCC | 13|
+| GND | resistor no GND |
+
+```C
+const int valvula = 13;
+
+void setup() {
+	pinMode(valvula,OUTPUT);
+
+}
+
+void loop() {
+	if ((TerraUmidade < 50) && (luz < 10)){
+		digitalWrite (valvula, HIGH);
+		delay(500);
+	}
+	else {
+		digitalWrite(valvula, LOW);
+	}
+}
+```
+
+## Código LED + Higrômetro + LDR + DHT + LCD
+```C
+#include "DHT.h"
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+DHT dht(7, DHT22);
+
+const int SensorLuz = A0;
+int luz;
+
+const int SensorUmidade = A1;
+int TerraUmidade;
+
+const int valvula = 13;
+
+void setup() {
+  lcd.begin(20, 4);
+  dht.begin();
+  pinMode(valvula, OUTPUT);
+}
+
+void loop() {
+  delay(100);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  if (isnan(h) || isnan(t)) {
+    lcd.println("Failed");
+    return;
+  }
+
+  luz = analogRead(SensorLuz);
+  luz = map(luz, 0, 1023, 0, 100);
+
+  TerraUmidade = analogRead(SensorUmidade);
+  TerraUmidade = map(TerraUmidade, 0, 1023, 100, 0);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temperatura ");
+  lcd.print(t);
+  lcd.print("C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Umidade ");
+  lcd.print(h);
+  lcd.print("%");
+
+  lcd.setCursor(0, 2);
+  lcd.print("Luminosidade ");
+  lcd.print(luz);
+  lcd.print("% ");
+
+  lcd.setCursor(0, 3);
+  lcd.print("Umidade ");
+  lcd.print(TerraUmidade);
+  lcd.print("%");
+
+  if ((TerraUmidade < 50) && (luz < 10)) {
+    digitalWrite (valvula, HIGH);
+    delay(500);
+  }
+  else {
+    digitalWrite(valvula, LOW);
+  }
+}
+```
