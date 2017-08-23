@@ -9,7 +9,7 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 * Protoboard
 * 1 Resistor 330 Ohms
 * 1 Resistor 10k para o método Pull-UP (caso o sensor esteja longe da placa)
-* 1 Potenciômetro: usá-lo somente se o painel for 16x2 onde não tem auto-contraste
+* 1 Potenciômetro 10k: usá-lo somente se o painel não tem auto-contraste
 
 ###### Sensores:
 * 1 Sensor de temperatura e umidade ambiente: DHT22 (não é necessário, no projeto ele esta instalado na placa do projeto, mas o ideal é instalar ele na estufa ou no ambiente externo proximo da horta). A versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
@@ -29,14 +29,14 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 | 14 |  D7  |    2     |
 | 5 |  R/W |  ground   |
 | 1 |  VSS |  ground   |
-| 2 | VDD/VCC | 5V     |
-| 15 |anodo com resistor de 330 |VCC + ground|
+| 2 | VDD/VCC | VCC     |
+| 15 |anodo com resistor de 330 |VCC|
 | 16 |catodo| ground  |
 | 3 | V0 | Potenciômetro 10k pino 2 (meio) |
 | - | - | Potenciometro 10k pino 1 (positivo) |
 | - | - | Potenciometro 10k pino 3 (ground) |
 
-
+(VCC: 5V ou 3V)
 <img src="https://www.arduino.cc/en/uploads/Tutorial/LCD_Base_bb_Fritz.png" width="500"/>
 
 ## Arduino código: Hello World!
