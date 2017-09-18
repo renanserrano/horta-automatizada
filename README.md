@@ -18,6 +18,7 @@ A instrução a seguir descorrerá da seguinte maneira:
 14. Montagem rele (ativador do esguicho de água)
 15. Código rele
 16. Código do rele, higrômetro, LDR, DHT e LCD
+17. Montagem Válvula de vasão
 
 ## Materiais
 * Painel LCD: [JHD204A](http://www.alldatasheet.com/datasheet-pdf/pdf/276144/JHD/JHD204A.html) - 20x4
@@ -28,7 +29,8 @@ Nos exemplos do arduino, existe o LiquidCrystal - Hello World
 * 1 Resistor 330 Ohms (para o painel)
 * 1 Resistor 10k para o método Pull-UP (caso o sensor esteja longe da placa)
 * 1 Potenciômetro 10k (usá-lo somente se o painel não tem auto-contraste)
-* Rele (para liberaçao da agua de irrigação)
+* Rele 5V 1 canal(para liberaçao da agua de irrigação)
+* Vávula solenóide água 12VDC ou 110V
 
 ###### Sensores:
 * 1 Sensor de temperatura e umidade ambiente: DHT22 (não é necessário, no projeto ele esta instalado na placa do projeto, mas o ideal é instalar ele na estufa ou no ambiente externo proximo da horta). A versão 22 é mais precisa [Comprar](https://www.filipeflop.com/produto/sensor-de-umidade-e-temperatura-am2302-dht22/) | [Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
@@ -345,11 +347,14 @@ void loop() {
 ```
 
 ## Válvula
-Por enqto foi utilizado um led para simular a atuação do rele
-| LED | Arduino|
-| :---| ---:|
-| VCC | 13|
-| GND | resistor no GND |
+Existe opção de LED e Rele 5V 1 canal, no rele tem um jumper para definir se ele fica sempre em High ou em Low, repare que no código, ele esta em High
+
+| LED | Arduino| Rele   |
+| :---| :---:  | ----:  |
+| VCC | 13     |  IN    |
+| GND |resisGND| DC-    |
+| -   | VCC    |  DC+   |
+
 
 ```C
 const int valvula = 13;
@@ -370,7 +375,7 @@ void loop() {
 }
 ```
 
-## Código LED + Higrômetro + LDR + DHT + LCD
+## Código Rele/LED + Higrômetro + LDR + DHT + LCD
 ```C
 #include "DHT.h"
 #include <LiquidCrystal.h>
@@ -437,3 +442,21 @@ void loop() {
   }
 }
 ```
+
+## Solenóide
+Válvula de vasão solenóide água 12VDC ou 110V.
+A 12VDC, tem uma perna prédefinada para o GND e outra para o VCC
+
+| 12VDC | Fonte Arduino| Rele |
+| :---| :---:  | ----:  |
+| VCC| -   | NO |
+| GND|GND  | -  |
+| -  | VCC | COM |
+
+A porta NO, significa Normalmente Aberto (Normally Open), o circuito está aberto, ou seja, não está dando contato e como consequência, esta desativado.
+
+| 110V | Tomada  | Rele   |
+| :---  | :---:  | ----:  |
+| VCC   | -      |  NO    |
+| GND   |GND     | -      |
+| -     | VCC    |  COM   |
