@@ -460,3 +460,35 @@ A porta NO, significa Normalmente Aberto (Normally Open), o circuito está abert
 | VCC   | -      |  NO    |
 | GND   |GND     | -      |
 | -     | VCC    |  COM   |
+
+
+## Codigo inercia da luz no inicio
+
+```C
+ 
+ //Fora do Setup e do loop
+ #define numeroLeituras 10
+int leituras[numeroLeituras];
+int indiceLeitura = 0; //começa no primeiro índice (0) e vai até o 9 = 10
+int somaTotal = 0; //soma do indice de leitura
+int media = 0; //divide a soma total pelo numero de leituras
+
+//Dentro do setup
+ //para evitar que o registro abra ao ligar, jogamos o valor de cada índice de leitura do sensor,no máximo
+ //a cada nova leitura ele aumenta +1 na comparação e roda até 10 e finaliza
+ for (int i = 0; i < numeroLeituras; i++) {
+    leituras[i] = 1023; 
+ }
+
+```
+--> Missao: testar esse cálculo:
+```
+//Fora do Setup e do loop
+//Calculo de inercia da luminosidade, movimentação macia
+void calculoLuz() {
+  for (int i = 0; i < numeroLeituras; i++) {
+    sum += leituras[i];
+   return ((float) sum) / numeroLeituras;
+  }
+}
+```
